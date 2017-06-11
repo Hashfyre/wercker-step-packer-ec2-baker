@@ -21,9 +21,39 @@ Example:
     box: hashfyre/containers:packer // or any box with necessary packages
     steps:
       - hashfyre/packer-ec2-baker:
-          aws_key: "$AWS_KEY"
-          aws_secret: "$AWS_SECRET"
-          ami_tag:  "$AMI_TAG_KEY:$AMI_TAG_VALUE"// example: latest:xenial-16-04
+          aws_key: **OPTIONAL** // "$AWS_KEY"
+          aws_secret: **OPTIONAL** // "$AWS_SECRET"
+          ami_tag:  **OPTIONAL** // "$AMI_TAG_KEY:$AMI_TAG_VALUE"// example: latest:xenial-16-04
           ami_tag_delete: **OPTIONAL** // allowed values: [true | false] // default: false // set to "true", if tag from older AMI is to be deleted
           packer_file: "$PATH_TO_PACKER_JSON_TEMPLATE.json" // packer/base.json // example
 ```
+
+Optional AWS Creds
+------------------
+You may not specify `AWS_KEY` & `AWS_SECRET` in the step, however you'll have to
+add these two variable in the `wercker` global app environment
+or, in the pipeline environment.
+
+Your packer definition would look like:
+```
+{
+    "description": "Builds xenial AMI",
+    "variables": {
+        "aws_access_key": "{{env `AWS_KEY`}}",
+        "aws_secret_key": "{{env `AWS_SECRET`}}",
+        "<key>": "{{env `value`}}",
+        ...
+    },
+    ...
+}
+```
+Please go through [Packer/amazon ami builder](https://www.packer.io/docs/builders/amazon.html)
+for details on how to write a packer JSON template.
+
+Optional AMI Tag Deletion for Old AMIs
+--------------------------------------
+In some cases you may want to have an image tagged with a unique `<tag-key>:<tag-value>`,
+and if you're building a latest version of the same, the older tag has to be deleted.
+
+In these use-cases, specify both `ami_tag` & `ami_tag_delete`, this'd find out
+the older ami with the same tag, and delete the tag once the new AMI is built.

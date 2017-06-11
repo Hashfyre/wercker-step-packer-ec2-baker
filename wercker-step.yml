@@ -1,5 +1,5 @@
 name: packer-ec2-baker
-version: 0.0.3
+version: 0.0.4
 description: Create an AMI in AWS EC2
 keywords:
   - packer
@@ -10,13 +10,13 @@ keywords:
 properties:
   aws_key:
     type: string
-    required: true
+    required: false
   aws_secret:
     type: string
-    required: true
+    required: false
   ami_tag:
     type: string
-    required: true
+    required: false
   ami_tag_delete:
     type: string
     required: false

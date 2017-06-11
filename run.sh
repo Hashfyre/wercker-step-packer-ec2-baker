@@ -1,17 +1,12 @@
 # validate input
 if [ ! -n "$WERCKER_PACKER_EC2_BAKER_AWS_KEY" ]; then
-  error '[ERROR] Please specify aws_key property'
-  exit 1
+  echo '[INFO] aws_key property unspecifed'
+  echo '[INFO] Please ensure you have AWS_KEY in wercker environment'
 fi
 
 if [ ! -n "$WERCKER_PACKER_EC2_BAKER_AWS_SECRET" ]; then
-  error '[ERROR] Please specify aws_secret property'
-  exit 1
-fi
-
-if [ ! -n "$WERCKER_PACKER_EC2_BAKER_AMI_TAG" ]; then
-  error '[ERROR] Please specify ami_tag property'
-  exit 1
+  echo '[INFO] aws_secret property unspecifed'
+  echo '[INFO] Please ensure you have AWS_SECRET in wercker environment'
 fi
 
 if [ ! -n "$WERCKER_PACKER_EC2_BAKER_PACKER_FILE" ]; then
