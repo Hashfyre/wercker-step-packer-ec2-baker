@@ -14,12 +14,12 @@ properties:
   aws_secret:
     type: string
     required: true
-  ami_tag_key:
+  ami_tag:
     type: string
     required: true
-  ami_tag_value:
+  ami_tag_delete:
     type: string
-    required: true
+    required: false
   packer_file:
     type: string
     required: true
