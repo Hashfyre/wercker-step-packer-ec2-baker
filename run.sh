@@ -42,7 +42,7 @@ LAST_AMI_ID=`aws ec2 describe-images --query "Images[0].ImageId" --filters "Name
 echo "[LAST_AMI_ID: ${LAST_AMI_ID}]"
 
 # Bake Base AMI
-packer -machine-readable build packer/${PACKER_FILE} | tee ${PACKER_LOG}
+packer -machine-readable build ${PACKER_FILE} | tee ${PACKER_LOG}
 
 PACKER_EXEC_ERROR=${PIPESTATUS[0]}
 
