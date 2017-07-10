@@ -21,11 +21,12 @@ Example:
     box: hashfyre/containers:packer // or any box with necessary packages
     steps:
       - hashfyre/packer-ec2-baker:
-          aws_key: **OPTIONAL** // "$AWS_KEY"
-          aws_secret: **OPTIONAL** // "$AWS_SECRET"
-          ami_tag:  **OPTIONAL** // "$AMI_TAG_KEY:$AMI_TAG_VALUE"// example: latest:xenial-16-04
-          ami_tag_delete: **OPTIONAL** // allowed values: [true | false] // default: false // set to "true", if tag from older AMI is to be deleted
+          aws_key: (OPTIONAL) // "$AWS_KEY"
+          aws_secret: (OPTIONAL) // "$AWS_SECRET"
+          ami_tag:  (OPTIONAL) // "$AMI_TAG_KEY:$AMI_TAG_VALUE"// example: latest:xenial-16-04
+          ami_tag_delete: (OPTIONAL) // allowed values: [true | false] // default: false // set to "true", if tag from older AMI is to be deleted
           packer_file: "$PATH_TO_PACKER_JSON_TEMPLATE.json" // packer/base.json // example
+          on_error: (OPTIONAL) // allowed_values: [cleanup | abort] //default: cleanup
 ```
 
 Optional AWS Creds

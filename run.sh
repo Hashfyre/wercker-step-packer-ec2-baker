@@ -1,14 +1,4 @@
 # validate input
-if [ ! -n "$WERCKER_PACKER_EC2_BAKER_AWS_KEY" ]; then
-  echo '[INFO] aws_key property unspecifed'
-  echo '[INFO] Please ensure you have AWS_KEY in wercker environment'
-fi
-
-if [ ! -n "$WERCKER_PACKER_EC2_BAKER_AWS_SECRET" ]; then
-  echo '[INFO] aws_secret property unspecifed'
-  echo '[INFO] Please ensure you have AWS_SECRET in wercker environment'
-fi
-
 if [ ! -n "$WERCKER_PACKER_EC2_BAKER_PACKER_FILE" ]; then
   error '[ERROR] Please specify packer_file property'
   exit 1
@@ -20,6 +10,7 @@ AWS_SECRET=${WERCKER_PACKER_EC2_BAKER_AWS_SECRET}
 AMI_TAG=${WERCKER_PACKER_EC2_BAKER_AMI_TAG}
 AMI_TAG_DELETE=${WERCKER_PACKER_EC2_BAKER_AMI_TAG_DELETE:-false}
 PACKER_FILE=${WERCKER_PACKER_EC2_BAKER_PACKER_FILE}
+
 
 # derived
 AMI_TAG_KEY=${AMI_TAG%:*}
@@ -51,8 +42,14 @@ if [ "${WERCKER_PACKER_EC2_BAKER_AMI_TAG_DELETE}" == true ]; then
 fi
 
 # Bake Base AMI
-packer -machine-readable build ${PACKER_FILE} | tee ${PACKER_LOG}
-PACKER_EXEC_ERROR=${PIPESTATUS[0]}
+if [ ! -n "$WERCKER_PACKER_EC2_BAKER_ON_ERROR" ]; then
+  packer -machine-readable build ${PACKER_FILE} | tee ${PACKER_LOG}
+  PACKER_EXEC_ERROR=${PIPESTATUS[0]}
+else
+  PACKER_ON_ERROR=${WERCKER_PACKER_EC2_BAKER_ON_ERROR:-cleanup}
+  packer -machine-readable -on-error=${PACKER_ON_ERROR} build ${PACKER_FILE} | tee ${PACKER_LOG}
+  PACKER_EXEC_ERROR=${PIPESTATUS[0]}
+fi
 
 # exit on packer error
 if [ ${PACKER_EXEC_ERROR} != 0 ]; then

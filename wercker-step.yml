@@ -23,3 +23,7 @@ properties:
   packer_file:
     type: string
     required: true
+  on_error:
+    type: string
+    required: false
+    default: cleanup
