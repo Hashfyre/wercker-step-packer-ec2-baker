@@ -11,6 +11,12 @@ AMI_TAG=${WERCKER_PACKER_EC2_BAKER_AMI_TAG}
 AMI_TAG_DELETE=${WERCKER_PACKER_EC2_BAKER_AMI_TAG_DELETE:-false}
 PACKER_FILE=${WERCKER_PACKER_EC2_BAKER_PACKER_FILE}
 
+# validate packer file
+packer validate -syntax-only ${PACKER_FILE} > /dev/null
+if [ "${PIPESTATUS[0]}" != 0 ]; then
+  error "Packer validate failed on - ${PACKER_FILE}"
+  exit 1
+fi
 
 # derived
 AMI_TAG_KEY=${AMI_TAG%:*}
