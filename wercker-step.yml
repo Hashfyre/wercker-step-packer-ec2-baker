@@ -1,5 +1,5 @@
 name: packer-ec2-baker
-version: 0.0.4
+version: 0.0.5
 description: Create an AMI in AWS EC2
 keywords:
   - packer
