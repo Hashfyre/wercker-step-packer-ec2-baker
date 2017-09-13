@@ -17,6 +17,9 @@ properties:
   ami_tag:
     type: string
     required: false
+  ami_vpc_tag:
+    type: string
+    required: false
   ami_tag_delete:
     type: string
     required: false
