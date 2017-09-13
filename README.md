@@ -52,8 +52,15 @@ for details on how to write a packer JSON template.
 
 Optional AMI Tag Deletion for Old AMIs
 --------------------------------------
-In some cases you may want to have an image tagged with a unique `<tag-key>:<tag-value>`,
-and if you're building a latest version of the same, the older tag has to be deleted.
+In some cases you may want to have an image tagged with a unique sets of:
+`<tag-keys>:<tag-values>`, and if you're building a latest version of the same,
+the older tag has to be deleted.
 
-In these use-cases, specify both `ami_tag` & `ami_tag_delete`, this'd find out
-the older ami with the same tag, and delete the tag once the new AMI is built.
+In these use-cases, optinally specify:
+ - `ami_tag`
+ - `ami_vpc_tag`
+this'd find out the older ami with the same tag,
+
+Specify:
+ - `ami_tag_delete`
+to delete the old AMI tags once the new AMI is built.

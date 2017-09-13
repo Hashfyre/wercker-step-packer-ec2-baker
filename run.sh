@@ -18,12 +18,17 @@ fi
 AWS_KEY=${WERCKER_PACKER_EC2_BAKER_AWS_KEY}
 AWS_SECRET=${WERCKER_PACKER_EC2_BAKER_AWS_SECRET}
 AMI_TAG=${WERCKER_PACKER_EC2_BAKER_AMI_TAG}
+AMI_VPC_TAG=${WERCKER_PACKER_EC2_BAKER_AMI_VPC_TAG}
 AMI_TAG_DELETE=${WERCKER_PACKER_EC2_BAKER_AMI_TAG_DELETE:-false}
 PACKER_FILE=${WERCKER_PACKER_EC2_BAKER_PACKER_FILE}
 
 # derived
 AMI_TAG_KEY=${AMI_TAG%:*}
 AMI_TAG_VALUE=${AMI_TAG#*:}
+AMI_VPC_TAG_KEY=${AMI_VPC_TAG%:*}
+AMI_VPC_TAG_VALUE=${AMI_VPC_TAG#*:}
+
+
 
 if [ ! -n "$AMI_TAG_KEY" ]; then
   error '[ERROR] AMI_TAG_KEY generation failed.'
@@ -46,7 +51,7 @@ echo $PACKER_LOG
 # Get Last Base AMI
 if [ "${WERCKER_PACKER_EC2_BAKER_AMI_TAG_DELETE}" == true ]; then
   echo "[AMI-TAG]: ${AMI_TAG_KEY}:${AMI_TAG_VALUE}"
-  OLD_AMI_ID=`aws ec2 describe-images --query "Images[0].ImageId" --filters "Name=tag:${AMI_TAG_KEY}, Values=${AMI_TAG_VALUE}" --output text`
+  OLD_AMI_ID=`aws ec2 describe-images --query "Images[0].ImageId" --filters "Name=tag:${AMI_TAG_KEY}, Values=${AMI_TAG_VALUE}" "Name=tag:${AMI_VPC_TAG_KEY}, Values=${AMI_VPC_TAG_VALUE}" --output text`
   echo "[OLD_AMI_ID: ${OLD_AMI_ID}]"
 fi
 
